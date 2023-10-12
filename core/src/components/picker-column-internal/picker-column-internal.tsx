@@ -225,7 +225,7 @@ export class PickerColumnInternal implements ComponentInterface {
     }
 
     this.setInputModeActive(true);
-  }
+  };
 
   /**
    * Setting isActive will cause a re-render.

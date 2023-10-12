@@ -212,7 +212,6 @@ export class PickerColumnInternal implements ComponentInterface {
     if (!this.numericInput) {
       return;
     }
-    console.log('input mode change');
 
     /**
      * If inputModeColumn is undefined then this means

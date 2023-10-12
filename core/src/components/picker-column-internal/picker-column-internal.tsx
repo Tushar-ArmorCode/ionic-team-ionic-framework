@@ -7,7 +7,6 @@ import { createColorClasses } from '@utils/theme';
 
 import { getIonMode } from '../../global/ionic-global';
 import type { Color } from '../../interface';
-import type { PickerInternalCustomEvent } from '../picker-internal/picker-internal-interfaces';
 
 import type { PickerColumnItem } from './picker-column-internal-interfaces';
 
@@ -118,11 +117,7 @@ export class PickerColumnInternal implements ComponentInterface {
     };
     new IntersectionObserver(visibleCallback, { threshold: 0.001 }).observe(this.el);
 
-    const parentEl = (this.parentEl = this.el.closest('ion-picker-internal') as HTMLIonPickerInternalElement | null);
-    if (parentEl !== null) {
-      // TODO(FW-2832): type
-      parentEl.addEventListener('ionInputModeChange', (ev: any) => this.inputModeChange(ev));
-    }
+    this.parentEl = this.el.closest('ion-picker-internal') as HTMLIonPickerInternalElement | null;
   }
 
   componentDidRender() {
@@ -209,13 +204,15 @@ export class PickerColumnInternal implements ComponentInterface {
    * When ionInputModeChange is emitted, each column
    * needs to check if it is the one being made available
    * for text entry.
+   * input/change event listeners.
+   * @internal
    */
-  private inputModeChange = (ev: PickerInternalCustomEvent) => {
+  @Method()
+  async inputModeChange(useInputMode: boolean, inputModeColumn?: HTMLIonPickerColumnInternalElement) {
     if (!this.numericInput) {
       return;
     }
-
-    const { useInputMode, inputModeColumn } = ev.detail;
+    console.log('input mode change');
 
     /**
      * If inputModeColumn is undefined then this means
@@ -229,7 +226,7 @@ export class PickerColumnInternal implements ComponentInterface {
     }
 
     this.setInputModeActive(true);
-  };
+  }
 
   /**
    * Setting isActive will cause a re-render.

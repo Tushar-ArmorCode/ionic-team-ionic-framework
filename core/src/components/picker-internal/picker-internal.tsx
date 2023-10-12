@@ -1,8 +1,6 @@
-import type { ComponentInterface, EventEmitter } from '@stencil/core';
-import { Component, Element, Event, Listen, Method, Host, h } from '@stencil/core';
+import type { ComponentInterface } from '@stencil/core';
+import { Component, Element, Listen, Method, Host, h } from '@stencil/core';
 import { getElementRoot } from '@utils/helpers';
-
-import type { PickerInternalChangeEventDetail } from './picker-internal-interfaces';
 
 /**
  * @virtualProp {"ios" | "md"} mode - The mode determines which platform styles to use.
@@ -26,8 +24,6 @@ export class PickerInternal implements ComponentInterface {
   private singleColumnSearchTimeout?: ReturnType<typeof setTimeout>;
 
   @Element() el!: HTMLIonPickerInternalElement;
-
-  @Event() ionInputModeChange!: EventEmitter<PickerInternalChangeEventDetail>;
 
   /**
    * When the picker is interacted with
@@ -271,7 +267,7 @@ export class PickerInternal implements ComponentInterface {
       };
     }
 
-    this.emitInputModeChange();
+    this.triggerInputModeChange();
   };
 
   /**
@@ -297,7 +293,7 @@ export class PickerInternal implements ComponentInterface {
       this.destroyKeypressListener = undefined;
     }
 
-    this.emitInputModeChange();
+    this.triggerInputModeChange();
   }
 
   private onKeyPress = (ev: KeyboardEvent) => {
@@ -529,17 +525,14 @@ export class PickerInternal implements ComponentInterface {
   };
 
   /**
-   * Emit ionInputModeChange. Picker columns
-   * listen for this event to determine whether
+   * Triggers an input mode change on child picker columns.
+   * This helps each picker column determine whether
    * or not their column is "active" for text input.
    */
-  private emitInputModeChange = () => {
-    const { useInputMode, inputModeColumn } = this;
+  private triggerInputModeChange = () => {
+    const pickerColumns = this.el.querySelectorAll('ion-picker-column-internal');
 
-    this.ionInputModeChange.emit({
-      useInputMode,
-      inputModeColumn,
-    });
+    pickerColumns.forEach((pickerColumn) => pickerColumn.inputModeChange(this.useInputMode, this.inputModeColumn));
   };
 
   render() {

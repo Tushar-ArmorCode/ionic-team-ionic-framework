@@ -25,7 +25,6 @@ import { NavComponent, NavComponentWithProps, NavOptions, RouterOutletOptions, S
 import { ViewController } from "./components/nav/view-controller";
 import { PickerButton, PickerColumn } from "./components/picker/picker-interface";
 import { PickerColumnItem } from "./components/picker-column-internal/picker-column-internal-interfaces";
-import { PickerInternalChangeEventDetail } from "./components/picker-internal/picker-internal-interfaces";
 import { PopoverSize, PositionAlign, PositionReference, PositionSide, TriggerAction } from "./components/popover/popover-interface";
 import { RadioGroupChangeEventDetail } from "./components/radio-group/radio-group-interface";
 import { PinFormatter, RangeChangeEventDetail, RangeKnobMoveEndEventDetail, RangeKnobMoveStartEventDetail, RangeValue } from "./components/range/range-interface";
@@ -61,7 +60,6 @@ export { NavComponent, NavComponentWithProps, NavOptions, RouterOutletOptions, S
 export { ViewController } from "./components/nav/view-controller";
 export { PickerButton, PickerColumn } from "./components/picker/picker-interface";
 export { PickerColumnItem } from "./components/picker-column-internal/picker-column-internal-interfaces";
-export { PickerInternalChangeEventDetail } from "./components/picker-internal/picker-internal-interfaces";
 export { PopoverSize, PositionAlign, PositionReference, PositionSide, TriggerAction } from "./components/popover/popover-interface";
 export { RadioGroupChangeEventDetail } from "./components/radio-group/radio-group-interface";
 export { PinFormatter, RangeChangeEventDetail, RangeKnobMoveEndEventDetail, RangeKnobMoveStartEventDetail, RangeValue } from "./components/range/range-interface";
@@ -2044,6 +2042,10 @@ export namespace Components {
          */
         "color"?: Color;
         /**
+          * When ionInputModeChange is emitted, each column needs to check if it is the one being made available for text entry. input/change event listeners.
+         */
+        "inputModeChange": (useInputMode: boolean, inputModeColumn?: HTMLIonPickerColumnInternalElement) => Promise<void>;
+        /**
           * A list of options to be displayed in the picker
          */
         "items": PickerColumnItem[];
@@ -3329,10 +3331,6 @@ export interface IonPickerColumnCustomEvent<T> extends CustomEvent<T> {
 export interface IonPickerColumnInternalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIonPickerColumnInternalElement;
-}
-export interface IonPickerInternalCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLIonPickerInternalElement;
 }
 export interface IonPopoverCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -6085,7 +6083,6 @@ declare namespace LocalJSX {
           * The mode determines which platform styles to use.
          */
         "mode"?: "ios" | "md";
-        "onIonInputModeChange"?: (event: IonPickerInternalCustomEvent<PickerInternalChangeEventDetail>) => void;
     }
     interface IonPopover {
         /**

@@ -9,7 +9,7 @@
     "lint.fix": "npm run eslint -- --fix && npm run prettier -- --write --cache",
     "test": "jest",
     "build": "npm run copy && npm run copy.overlays && npm run bundle && npm run build.vetur && npm run build.web-types",
-    "bundle": "esbuild ./src/**/* --outdir=dist",
+    "bundle": "esbuild ./src/**/* --outdir=dist --sourcemap",
     "build.web-types": "node ./scripts/build-web-types.js",
     "build.vetur": "node ./scripts/build-vetur.js",
     "copy": "node ./scripts/copy-css.js",

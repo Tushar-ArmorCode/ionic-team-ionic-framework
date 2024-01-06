@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@ionic/core": "^7.5.4",
-    "ionicons": "^7.0.0"
+    "ionicons": "^7.2.2"
   },
   "vetur": {
     "tags": "dist/vetur/tags.json",
